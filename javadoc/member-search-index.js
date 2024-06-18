@@ -1,0 +1,1 @@
+memberSearchIndex = [{"p":"com.surrealdb","c":"Surreal","l":"close()"},{"p":"com.surrealdb","c":"Surreal","l":"connect(String)","u":"connect(java.lang.String)"},{"p":"com.surrealdb","c":"Surreal","l":"new_instance()"}];updateSearchResults();
