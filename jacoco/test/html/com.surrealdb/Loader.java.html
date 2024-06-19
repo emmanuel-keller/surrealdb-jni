@@ -32,7 +32,7 @@ import java.util.stream.Stream;
 <span class="nc bnc" id="L32" title="All 4 branches missed.">        if (name.contains(&quot;nix&quot;) || name.contains(&quot;nux&quot;)) {</span>
 <span class="nc bnc" id="L33" title="All 2 branches missed.">            if (arch.contains(&quot;aarch64&quot;)) {</span>
 <span class="nc" id="L34">                return &quot;linux_arm64&quot;;</span>
-<span class="nc bnc" id="L35" title="All 2 branches missed.">            } else if (arch.contains(&quot;x86_64&quot;)) {</span>
+<span class="nc bnc" id="L35" title="All 4 branches missed.">            } else if (arch.contains(&quot;x86_64&quot;) || arch.contains(&quot;amd64&quot;)) {</span>
 <span class="nc" id="L36">                return &quot;linux_64&quot;;</span>
             }
 <span class="nc bnc" id="L38" title="All 2 branches missed.">        } else if (name.contains(&quot;win&quot;)) {</span>
