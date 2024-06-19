@@ -56,19 +56,20 @@ import java.util.Locale;
 <span class="nc" id="L56">    }</span>
 
     private static File extract(String path) throws IOException {
-<span class="nc" id="L59">        final URL resource = Surreal.class.getClassLoader().getResource(&quot;/natives/&quot; + path + SURREALDB_LIBNAME);</span>
-<span class="nc bnc" id="L60" title="All 2 branches missed.">        if (resource == null) {</span>
-<span class="nc" id="L61">            throw new RuntimeException(&quot;Couldn't find resource: &quot; + path);</span>
+<span class="nc" id="L59">        final String resourcePath = &quot;/natives/&quot; + path + &quot;/&quot; + SURREALDB_LIBNAME;</span>
+<span class="nc" id="L60">        final URL resource = Surreal.class.getClassLoader().getResource(resourcePath);</span>
+<span class="nc bnc" id="L61" title="All 2 branches missed.">        if (resource == null) {</span>
+<span class="nc" id="L62">            throw new RuntimeException(&quot;Couldn't find resource: &quot; + resourcePath);</span>
         }
-<span class="nc" id="L63">        final Path tempDir = Files.createTempDirectory(&quot;surrealdb-jni&quot;);</span>
-<span class="nc" id="L64">        final URLConnection connection = resource.openConnection();</span>
-<span class="nc" id="L65">        connection.setUseCaches(false);</span>
-<span class="nc" id="L66">        try (InputStream in = new BufferedInputStream(connection.getInputStream())) {</span>
-<span class="nc" id="L67">            final File outfile = new File(tempDir.toFile(), SURREALDB_LIBNAME);</span>
-<span class="nc" id="L68">            try (FileOutputStream out = new FileOutputStream(outfile)) {</span>
-<span class="nc" id="L69">                copy(in, out);</span>
+<span class="nc" id="L64">        final Path tempDir = Files.createTempDirectory(&quot;surrealdb-jni&quot;);</span>
+<span class="nc" id="L65">        final URLConnection connection = resource.openConnection();</span>
+<span class="nc" id="L66">        connection.setUseCaches(false);</span>
+<span class="nc" id="L67">        try (InputStream in = new BufferedInputStream(connection.getInputStream())) {</span>
+<span class="nc" id="L68">            final File outfile = new File(tempDir.toFile(), SURREALDB_LIBNAME);</span>
+<span class="nc" id="L69">            try (FileOutputStream out = new FileOutputStream(outfile)) {</span>
+<span class="nc" id="L70">                copy(in, out);</span>
             }
-<span class="nc" id="L71">            return outfile;</span>
+<span class="nc" id="L72">            return outfile;</span>
         }
     }
 
