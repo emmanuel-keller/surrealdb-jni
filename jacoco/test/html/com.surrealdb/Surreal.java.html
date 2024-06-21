@@ -9,38 +9,38 @@ import java.util.Map;
 public class Surreal implements AutoCloseable {
 
     static {
-<span class="fc" id="L12">        Loader.load_native();</span>
+<span class="fc" id="L12">        Loader.loadNative();</span>
 <span class="fc" id="L13">    }</span>
 
     // Unique internal ID used by the native library to locate the SurrealDB instance
-    private final long id;
+    private long id;
 
 <span class="fc" id="L18">    public Surreal() {</span>
-<span class="fc" id="L19">        id = Surreal.new_instance();</span>
+<span class="fc" id="L19">        id = Surreal.newInstance();</span>
 <span class="fc" id="L20">    }</span>
 
-    private static native long new_instance();
+    private static native long newInstance();
 
-    private static native boolean delete_instance(long id);
+    private static native boolean deleteInstance(long id);
 
-    private static native boolean connect(long id, String connect) throws SurrealDBException;
+    private static native boolean connect(long id, String connect);
 
-    private static native String signinRoot(long id, String username, String password) throws SurrealDBException;
+    private static native String signinRoot(long id, String username, String password);
 
-    private static native boolean useNs(long id, String ns) throws SurrealDBException;
+    private static native boolean useNs(long id, String ns);
 
-    private static native boolean useDb(long id, String ns) throws SurrealDBException;
+    private static native boolean useDb(long id, String ns);
 
-    private static native long query(long id, String sql) throws SurrealDBException;
+    private static native long query(long id, String sql);
 
-    private static native long query_bind(long id, String sql, Map&lt;String, Object&gt; params) throws SurrealDBException;
+    private static native long queryBind(long id, String sql, Map&lt;String, ?&gt; params);
 
-    public Surreal connect(String connect) throws SurrealDBException {
+    public Surreal connect(String connect) {
 <span class="fc" id="L39">        connect(id, connect);</span>
 <span class="fc" id="L40">        return this;</span>
     }
 
-    public Jwt signin(Signin signin) throws SurrealDBException {
+    public Jwt signin(Signin signin) {
 <span class="nc bnc" id="L44" title="All 2 branches missed.">        if (signin instanceof Root) {</span>
 <span class="nc" id="L45">            final Root r = (Root) signin;</span>
 <span class="nc" id="L46">            return new Jwt(signinRoot(id, r.getUsername(), r.getPassword()));</span>
@@ -48,29 +48,39 @@ public class Surreal implements AutoCloseable {
 <span class="nc" id="L48">        throw new SurrealDBException(&quot;Unsupported signin&quot;);</span>
     }
 
-    public Surreal useNs(String ns) throws SurrealDBException {
+    public Surreal useNs(String ns) {
 <span class="fc" id="L52">        useNs(id, ns);</span>
 <span class="fc" id="L53">        return this;</span>
     }
 
-    public Surreal useDb(String ns) throws SurrealDBException {
+    public Surreal useDb(String ns) {
 <span class="fc" id="L57">        useDb(id, ns);</span>
 <span class="fc" id="L58">        return this;</span>
     }
 
-    public Response query(String sql) throws SurrealDBException {
-<span class="nc" id="L62">        return new Response(query(id, sql));</span>
+    public Response query(String sql) {
+<span class="fc" id="L62">        return new Response(query(id, sql));</span>
     }
 
-    public Response query_bind(String sql, Map&lt;String, Object&gt; params) throws SurrealDBException {
-<span class="nc" id="L66">        return new Response(query_bind(id, sql, params));</span>
+    public Response queryBind(String sql, Map&lt;String, ?&gt; params) {
+<span class="nc" id="L66">        return new Response(queryBind(id, sql, params));</span>
     }
 
     @Override
     public void close() {
-<span class="fc" id="L71">        delete_instance(id);</span>
-<span class="fc" id="L72">    }</span>
+<span class="fc" id="L71">        deleteInstance(id);</span>
+<span class="fc" id="L72">        id = 0;</span>
+<span class="fc" id="L73">    }</span>
 
+    @Override
+    @Deprecated
+    protected void finalize() throws Throwable {
+        try {
+<span class="nc" id="L79">            close();</span>
+        } finally {
+<span class="nc" id="L81">            super.finalize();</span>
+        }
+<span class="nc" id="L83">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

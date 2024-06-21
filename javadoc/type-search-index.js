@@ -1,1 +1,0 @@
-typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"com.surrealdb.signin","l":"Jwt"},{"p":"com.surrealdb","l":"Response"},{"p":"com.surrealdb.signin","l":"Root"},{"p":"com.surrealdb.signin","l":"Signin"},{"p":"com.surrealdb","l":"Surreal"},{"p":"com.surrealdb","l":"SurrealDBException"}];updateSearchResults();

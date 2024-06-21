@@ -14,19 +14,19 @@ import java.util.stream.Stream;
 <span class="fc" id="L14">    static String SURREALDB = &quot;surrealdb&quot;;</span>
 <span class="fc" id="L15">    static String SURREALDB_LIBNAME = System.mapLibraryName(SURREALDB);</span>
 
-    static void load_native() throws RuntimeException {
+    static void loadNative() throws RuntimeException {
         try {
 <span class="fc" id="L19">            System.loadLibrary(SURREALDB);</span>
 <span class="nc" id="L20">        } catch (final UnsatisfiedLinkError e) {</span>
             try {
-<span class="nc" id="L22">                System.load(extract(get_path()).getAbsolutePath());</span>
+<span class="nc" id="L22">                System.load(extract(getPath()).getAbsolutePath());</span>
 <span class="nc" id="L23">            } catch (Exception e2) {</span>
 <span class="nc" id="L24">                throw new RuntimeException(&quot;Couldn't load &quot; + SURREALDB, e2);</span>
 <span class="nc" id="L25">            }</span>
 <span class="fc" id="L26">        }</span>
 <span class="fc" id="L27">    }</span>
 
-    private static String get_path() {
+    private static String getPath() {
 <span class="nc" id="L30">        final String vendor = System.getProperty(&quot;java.vendor&quot;).toLowerCase(Locale.ENGLISH);</span>
 <span class="nc" id="L31">        final String arch = System.getProperty(&quot;os.arch&quot;).toLowerCase(Locale.ENGLISH);</span>
 <span class="nc" id="L32">        final String name = System.getProperty(&quot;os.name&quot;).toLowerCase(Locale.ENGLISH);</span>
