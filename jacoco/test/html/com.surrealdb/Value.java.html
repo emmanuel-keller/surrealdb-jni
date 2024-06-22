@@ -43,7 +43,7 @@ public class Value implements AutoCloseable {
 
     private static native boolean isUuid(long id);
 
-    private static native UUID getUuid(long id);
+    private static native String getUuid(long id);
 
     private static native boolean isArray(long id);
 
@@ -106,11 +106,11 @@ public class Value implements AutoCloseable {
     }
 
     public boolean isLong() {
-<span class="nc" id="L109">        return isLong(id);</span>
+<span class="fc" id="L109">        return isLong(id);</span>
     }
 
-    public float getLong() {
-<span class="nc" id="L113">        return getLong(id);</span>
+    public long getLong() {
+<span class="fc" id="L113">        return getLong(id);</span>
     }
 
     public boolean isBigdecimal() {
@@ -138,19 +138,19 @@ public class Value implements AutoCloseable {
     }
 
     public boolean isUuid() {
-<span class="nc" id="L141">        return isUuid(id);</span>
+<span class="fc" id="L141">        return isUuid(id);</span>
     }
 
     public UUID getUuid() {
-<span class="nc" id="L145">        return getUuid(id);</span>
+<span class="fc" id="L145">        return UUID.fromString(getUuid(id));</span>
     }
 
     public boolean isThing() {
-<span class="nc" id="L149">        return isThing(id);</span>
+<span class="fc" id="L149">        return isThing(id);</span>
     }
 
     public Thing getThing() {
-<span class="nc" id="L153">        return new Thing(getThing(id));</span>
+<span class="fc" id="L153">        return new Thing(getThing(id));</span>
     }
 
     public boolean isBytes() {
@@ -176,14 +176,13 @@ public class Value implements AutoCloseable {
 <span class="nc" id="L176">    }</span>
 
     @Override
-    @Deprecated
     protected void finalize() throws Throwable {
         try {
-<span class="nc" id="L182">            close();</span>
+<span class="nc" id="L181">            close();</span>
         } finally {
-<span class="nc" id="L184">            super.finalize();</span>
+<span class="nc" id="L183">            super.finalize();</span>
         }
-<span class="nc" id="L186">    }</span>
+<span class="nc" id="L185">    }</span>
 }
 
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

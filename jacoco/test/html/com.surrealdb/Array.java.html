@@ -27,33 +27,32 @@ public class Array implements AutoCloseable {
 <span class="nc" id="L27">    }</span>
 
     @Override
-    @Deprecated
     protected void finalize() throws Throwable {
         try {
-<span class="nc" id="L33">            close();</span>
+<span class="nc" id="L32">            close();</span>
         } finally {
-<span class="nc" id="L35">            super.finalize();</span>
+<span class="nc" id="L34">            super.finalize();</span>
         }
-<span class="nc" id="L37">    }</span>
+<span class="nc" id="L36">    }</span>
 
     public String toString() {
-<span class="fc" id="L40">        return toString(id);</span>
+<span class="fc" id="L39">        return toString(id);</span>
     }
 
     public String toPrettyString() {
-<span class="fc" id="L44">        return toPrettyString(id);</span>
+<span class="fc" id="L43">        return toPrettyString(id);</span>
     }
 
     public Value get(int idx) {
-<span class="fc" id="L48">        return new Value(get(id, idx));</span>
+<span class="fc" id="L47">        return new Value(get(id, idx));</span>
     }
 
     public int len() {
-<span class="fc" id="L52">        return len(id);</span>
+<span class="fc" id="L51">        return len(id);</span>
     }
 
     public ValueIterator iter() {
-<span class="nc" id="L56">        return new ValueIterator(iter(id));</span>
+<span class="nc" id="L55">        return new ValueIterator(iter(id));</span>
     }
 }
 

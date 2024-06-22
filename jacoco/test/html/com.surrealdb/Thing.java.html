@@ -4,27 +4,38 @@ public class Thing implements AutoCloseable {
 
     private long id;
 
-<span class="nc" id="L7">    Thing(long id) {</span>
-<span class="nc" id="L8">        this.id = id;</span>
-<span class="nc" id="L9">    }</span>
+<span class="fc" id="L7">    Thing(long id) {</span>
+<span class="fc" id="L8">        this.id = id;</span>
+<span class="fc" id="L9">    }</span>
 
     private static native boolean deleteInstance(long id);
 
-    @Override
-    public void close() {
-<span class="nc" id="L15">        deleteInstance(id);</span>
-<span class="nc" id="L16">        id = 0;</span>
-<span class="nc" id="L17">    }</span>
+    private static native String getTable(long id);
+
+    private static native long getId(long id);
 
     @Override
-    @Deprecated
+    public void close() {
+<span class="nc" id="L19">        deleteInstance(id);</span>
+<span class="nc" id="L20">        id = 0;</span>
+<span class="nc" id="L21">    }</span>
+
+    @Override
     protected void finalize() throws Throwable {
         try {
-<span class="nc" id="L23">            close();</span>
+<span class="nc" id="L26">            close();</span>
         } finally {
-<span class="nc" id="L25">            super.finalize();</span>
+<span class="nc" id="L28">            super.finalize();</span>
         }
-<span class="nc" id="L27">    }</span>
+<span class="nc" id="L30">    }</span>
+
+    public String getTable() {
+<span class="fc" id="L33">        return getTable(id);</span>
+    }
+
+    public Id getId() {
+<span class="fc" id="L37">        return new Id(getId(id));</span>
+    }
 }
 
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

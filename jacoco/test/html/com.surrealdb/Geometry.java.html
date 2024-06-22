@@ -17,14 +17,13 @@ public class Geometry implements AutoCloseable {
 <span class="nc" id="L17">    }</span>
 
     @Override
-    @Deprecated
     protected void finalize() throws Throwable {
         try {
-<span class="nc" id="L23">            close();</span>
+<span class="nc" id="L22">            close();</span>
         } finally {
-<span class="nc" id="L25">            super.finalize();</span>
+<span class="nc" id="L24">            super.finalize();</span>
         }
-<span class="nc" id="L27">    }</span>
+<span class="nc" id="L26">    }</span>
 }
 
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
