@@ -2,42 +2,26 @@
 
 import java.awt.geom.Point2D;
 
-public class Geometry implements AutoCloseable {
+public class Geometry extends Native {
 
-    private long id;
 
-<span class="fc" id="L9">    Geometry(long id) {</span>
-<span class="fc" id="L10">        this.id = id;</span>
-<span class="fc" id="L11">    }</span>
+    Geometry(long ptr) {
+<span class="fc" id="L9">        super(ptr);</span>
+<span class="fc" id="L10">    }</span>
 
-    private static native boolean deleteInstance(long id);
+    private static native boolean isPoint(long ptr);
 
-    private static native boolean isPoint(long id);
+    private static native double[] getPoint(long ptr);
 
-    private static native double[] getPoint(long id);
-
-    @Override
-    public void close() {
-<span class="nc" id="L21">        deleteInstance(id);</span>
-<span class="nc" id="L22">        id = 0;</span>
-<span class="nc" id="L23">    }</span>
-
-    @Override
-    protected void finalize() throws Throwable {
-        try {
-<span class="nc" id="L28">            close();</span>
-        } finally {
-<span class="nc" id="L30">            super.finalize();</span>
-        }
-<span class="nc" id="L32">    }</span>
+    final protected native boolean deleteInstance(long ptr);
 
     public boolean isPoint() {
-<span class="nc" id="L35">        return isPoint(id);</span>
+<span class="nc" id="L19">        return isPoint(getPtr());</span>
     }
 
     public Point2D.Double getPoint() {
-<span class="fc" id="L39">        final double[] coord = getPoint(id);</span>
-<span class="fc" id="L40">        return new Point2D.Double(coord[0], coord[1]);</span>
+<span class="fc" id="L23">        final double[] coord = getPoint(getPtr());</span>
+<span class="fc" id="L24">        return new Point2D.Double(coord[0], coord[1]);</span>
     }
 }
 

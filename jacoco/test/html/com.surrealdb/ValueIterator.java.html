@@ -2,43 +2,26 @@
 
 import java.util.Iterator;
 
-public class ValueIterator implements Iterator&lt;Value&gt;, AutoCloseable {
+public class ValueIterator extends Native implements Iterator&lt;Value&gt; {
 
-    private long id;
+    ValueIterator(long ptr) {
+<span class="fc" id="L8">        super(ptr);</span>
+<span class="fc" id="L9">    }</span>
 
-<span class="nc" id="L9">    ValueIterator(long id) {</span>
-<span class="nc" id="L10">        this.id = id;</span>
-<span class="nc" id="L11">    }</span>
+    private static native boolean hasNext(long ptr);
 
-    private static native boolean deleteInstance(long id);
+    private static native long next(long ptr);
 
-    private static native boolean hasNext(long id);
-
-    private static native long next(long id);
-
-    @Override
-    public void close() {
-<span class="nc" id="L21">        deleteInstance(id);</span>
-<span class="nc" id="L22">        id = 0;</span>
-<span class="nc" id="L23">    }</span>
-
-    @Override
-    protected void finalize() throws Throwable {
-        try {
-<span class="nc" id="L28">            close();</span>
-        } finally {
-<span class="nc" id="L30">            super.finalize();</span>
-        }
-<span class="nc" id="L32">    }</span>
+    final protected native boolean deleteInstance(long ptr);
 
     @Override
     public boolean hasNext() {
-<span class="nc" id="L36">        return hasNext(id);</span>
+<span class="fc" id="L19">        return hasNext(getPtr());</span>
     }
 
     @Override
     public Value next() {
-<span class="nc" id="L41">        return new Value(next(id));</span>
+<span class="fc" id="L24">        return new Value(next(getPtr()));</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

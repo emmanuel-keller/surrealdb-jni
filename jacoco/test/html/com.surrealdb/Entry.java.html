@@ -1,41 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Entry.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">surrealdb-jni</a> &gt; <a href="index.source.html" class="el_package">com.surrealdb</a> &gt; <span class="el_source">Entry.java</span></div><h1>Entry.java</h1><pre class="source lang-java linenums">package com.surrealdb;
 
-public class Entry implements AutoCloseable {
+public class Entry extends Native {
 
-    private long id;
+    Entry(long ptr) {
+<span class="nc" id="L6">        super(ptr);</span>
+<span class="nc" id="L7">    }</span>
 
-<span class="nc" id="L7">    Entry(long id) {</span>
-<span class="nc" id="L8">        this.id = id;</span>
-<span class="nc" id="L9">    }</span>
+    private static native String getKey(long ptr);
 
-    private static native boolean deleteInstance(long id);
+    private static native long getValue(long ptr);
 
-    private static native String getKey(long id);
-
-    private static native long getValue(long id);
+    final protected native boolean deleteInstance(long ptr);
 
     public String getKey() {
-<span class="nc" id="L18">        return getKey(id);</span>
+<span class="nc" id="L16">        return getKey(getPtr());</span>
     }
 
     public Value getValue() {
-<span class="nc" id="L22">        return new Value(getValue(id));</span>
+<span class="nc" id="L20">        return new Value(getValue(getPtr()));</span>
     }
-
-    @Override
-    public void close() {
-<span class="nc" id="L27">        deleteInstance(id);</span>
-<span class="nc" id="L28">        id = 0;</span>
-<span class="nc" id="L29">    }</span>
-
-    @Override
-    protected void finalize() throws Throwable {
-        try {
-<span class="nc" id="L34">            close();</span>
-        } finally {
-<span class="nc" id="L36">            super.finalize();</span>
-        }
-<span class="nc" id="L38">    }</span>
 
 }
 
