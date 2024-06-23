@@ -44,8 +44,16 @@ public class Array extends Native implements Iterable&lt;Value&gt; {
 <span class="fc" id="L44">        return new ValueIterator(iterator(getPtr()));</span>
     }
 
-    public SynchronizedValueIterator synchronizedIterator() {
-<span class="fc" id="L48">        return new SynchronizedValueIterator(synchronizedIterator(getPtr()));</span>
+    public &lt;T&gt; Iterator&lt;T&gt; iterator(Class&lt;T&gt; clazz) {
+<span class="fc" id="L48">        return new ClassValueIterator(clazz, iterator());</span>
+    }
+
+    public Iterator&lt;Value&gt; synchronizedIterator() {
+<span class="fc" id="L52">        return new SynchronizedValueIterator(synchronizedIterator(getPtr()));</span>
+    }
+
+    public &lt;T&gt; Iterator&lt;T&gt; synchronizedIterator(Class&lt;T&gt; clazz) {
+<span class="nc" id="L56">        return new ClassValueIterator(clazz, synchronizedIterator());</span>
     }
 }
 

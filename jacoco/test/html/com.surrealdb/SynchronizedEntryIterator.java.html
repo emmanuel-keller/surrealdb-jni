@@ -2,7 +2,7 @@
 
 import java.util.Iterator;
 
-public class SynchronizedEntryIterator extends Native implements Iterator&lt;Entry&gt; {
+class SynchronizedEntryIterator extends Native implements Iterator&lt;Entry&gt; {
 
     SynchronizedEntryIterator(long ptr) {
 <span class="fc" id="L8">        super(ptr);</span>
@@ -15,12 +15,12 @@ public class SynchronizedEntryIterator extends Native implements Iterator&lt;Ent
     final protected native boolean deleteInstance(long ptr);
 
     @Override
-    public boolean hasNext() {
+    final public boolean hasNext() {
 <span class="fc" id="L19">        return hasNext(getPtr());</span>
     }
 
     @Override
-    public Entry next() {
+    final public Entry next() {
 <span class="fc" id="L24">        return new Entry(next(getPtr()));</span>
     }
 }
