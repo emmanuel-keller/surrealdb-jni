@@ -1,124 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ClassValueIterator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">surrealdb-jni</a> &gt; <a href="index.source.html" class="el_package">com.surrealdb</a> &gt; <span class="el_source">ClassValueIterator.java</span></div><h1>ClassValueIterator.java</h1><pre class="source lang-java linenums">package com.surrealdb;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 class ClassValueIterator&lt;T&gt; implements Iterator&lt;T&gt; {
 
-    private final Class&lt;T&gt; clazz;
+    private final ClassValueConverter&lt;T&gt; converter;
     private final Iterator&lt;Value&gt; iterator;
 
-<span class="fc" id="L15">    ClassValueIterator(Class&lt;T&gt; clazz, Iterator&lt;Value&gt; iterator) {</span>
-<span class="fc" id="L16">        this.clazz = clazz;</span>
-<span class="fc" id="L17">        this.iterator = iterator;</span>
-<span class="fc" id="L18">    }</span>
+<span class="fc" id="L10">    ClassValueIterator(Class&lt;T&gt; clazz, Iterator&lt;Value&gt; iterator) {</span>
+<span class="fc" id="L11">        this.converter = new ClassValueConverter&lt;&gt;(clazz);</span>
+<span class="fc" id="L12">        this.iterator = iterator;</span>
+<span class="fc" id="L13">    }</span>
 
-
-    private static java.lang.Object convertArrayValue(Field field, Value value) throws ReflectiveOperationException {
-<span class="pc bpc" id="L22" title="1 of 2 branches missed.">        if (value.isBoolean()) {</span>
-<span class="nc" id="L23">            value.getBoolean();</span>
-<span class="pc bpc" id="L24" title="1 of 2 branches missed.">        } else if (value.isDouble()) {</span>
-<span class="nc" id="L25">            return value.getDouble();</span>
-<span class="pc bpc" id="L26" title="1 of 2 branches missed.">        } else if (value.isLong()) {</span>
-<span class="nc" id="L27">            return value.getLong();</span>
-<span class="fc bfc" id="L28" title="All 2 branches covered.">        } else if (value.isString()) {</span>
-<span class="fc" id="L29">            return value.getString();</span>
-<span class="pc bpc" id="L30" title="1 of 2 branches missed.">        } else if (value.isThing()) {</span>
-<span class="nc" id="L31">            return value.getThing();</span>
-<span class="pc bpc" id="L32" title="1 of 2 branches missed.">        } else if (value.isGeometry()) {</span>
-<span class="nc" id="L33">            return value.getGeometry();</span>
-<span class="pc bpc" id="L34" title="1 of 2 branches missed.">        } else if (value.isBigdecimal()) {</span>
-<span class="nc" id="L35">            return value.getBigDecimal();</span>
-<span class="pc bpc" id="L36" title="1 of 2 branches missed.">        } else if (value.isBytes()) {</span>
-<span class="nc" id="L37">            return value.getBytes();</span>
-<span class="pc bpc" id="L38" title="1 of 2 branches missed.">        } else if (value.isUuid()) {</span>
-<span class="nc" id="L39">            return value.getUuid();</span>
-<span class="pc bpc" id="L40" title="1 of 2 branches missed.">        } else if (value.isObject()) {</span>
-<span class="fc" id="L41">            final Class&lt;?&gt; subType = getGenericType(field);</span>
-<span class="pc bpc" id="L42" title="1 of 2 branches missed.">            if (subType != null) {</span>
-<span class="fc" id="L43">                return convertObject(subType, value.getObject());</span>
-            }
-<span class="nc bnc" id="L45" title="All 2 branches missed.">        } else if (value.isArray()) {</span>
-<span class="nc" id="L46">            final List&lt;java.lang.Object&gt; arrayList = new ArrayList&lt;&gt;();</span>
-<span class="nc bnc" id="L47" title="All 2 branches missed.">            for (final Value elementValue : value.getArray()) {</span>
-<span class="nc" id="L48">                arrayList.add(convertArrayValue(field, elementValue));</span>
-<span class="nc" id="L49">            }</span>
-<span class="nc" id="L50">            return arrayList;</span>
-        }
-<span class="nc" id="L52">        return null;</span>
-    }
-
-    private static &lt;T&gt; T convertObject(Class&lt;T&gt; clazz, Object source) throws ReflectiveOperationException {
-<span class="fc" id="L56">        final T target = clazz.getConstructor().newInstance();</span>
-<span class="fc bfc" id="L57" title="All 2 branches covered.">        for (final Entry entry : source) {</span>
-<span class="fc" id="L58">            final Field field = clazz.getDeclaredField(entry.getKey());</span>
-<span class="fc" id="L59">            final Value value = entry.getValue();</span>
-<span class="fc" id="L60">            field.setAccessible(true);</span>
-<span class="fc bfc" id="L61" title="All 2 branches covered.">            if (value.isBoolean()) {</span>
-<span class="fc" id="L62">                field.setBoolean(target, value.getBoolean());</span>
-<span class="pc bpc" id="L63" title="1 of 2 branches missed.">            } else if (value.isDouble()) {</span>
-<span class="nc" id="L64">                field.setDouble(target, value.getDouble());</span>
-<span class="fc bfc" id="L65" title="All 2 branches covered.">            } else if (value.isLong()) {</span>
-<span class="fc" id="L66">                field.setLong(target, value.getLong());</span>
-<span class="fc bfc" id="L67" title="All 2 branches covered.">            } else if (value.isString()) {</span>
-<span class="fc" id="L68">                field.set(target, value.getString());</span>
-<span class="fc bfc" id="L69" title="All 2 branches covered.">            } else if (value.isThing()) {</span>
-<span class="fc" id="L70">                field.set(target, value.getThing());</span>
-<span class="pc bpc" id="L71" title="1 of 2 branches missed.">            } else if (value.isGeometry()) {</span>
-<span class="nc" id="L72">                field.set(target, value.getGeometry());</span>
-<span class="pc bpc" id="L73" title="1 of 2 branches missed.">            } else if (value.isBigdecimal()) {</span>
-<span class="nc" id="L74">                field.set(target, value.getBigDecimal());</span>
-<span class="pc bpc" id="L75" title="1 of 2 branches missed.">            } else if (value.isBytes()) {</span>
-<span class="nc" id="L76">                field.set(target, value.getBytes());</span>
-<span class="pc bpc" id="L77" title="1 of 2 branches missed.">            } else if (value.isUuid()) {</span>
-<span class="nc" id="L78">                field.set(target, value.getUuid());</span>
-<span class="fc bfc" id="L79" title="All 2 branches covered.">            } else if (value.isArray()) {</span>
-<span class="fc" id="L80">                final List&lt;java.lang.Object&gt; arrayList = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L81" title="All 2 branches covered.">                for (final Value elementValue : value.getArray()) {</span>
-<span class="fc" id="L82">                    arrayList.add(convertArrayValue(field, elementValue));</span>
-<span class="fc" id="L83">                }</span>
-<span class="fc" id="L84">                field.set(target, arrayList);</span>
-<span class="pc bpc" id="L85" title="1 of 2 branches missed.">            } else if (value.isObject()) {</span>
-<span class="fc" id="L86">                java.lang.Object o = convertObject(field.getType(), value.getObject());</span>
-<span class="fc" id="L87">                field.set(target, o);</span>
-            }
-<span class="fc" id="L89">        }</span>
-<span class="fc" id="L90">        return target;</span>
-    }
-
-    private static Class&lt;?&gt; getGenericType(Field field) {
-        // Check if the field is parameterized
-<span class="pc bpc" id="L95" title="1 of 2 branches missed.">        if (field.getGenericType() instanceof ParameterizedType) {</span>
-<span class="fc" id="L96">            ParameterizedType parameterizedType = (ParameterizedType) field.getGenericType();</span>
-
-            // Get the actual type arguments (generics)
-<span class="fc" id="L99">            final Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();</span>
-
-<span class="pc bpc" id="L101" title="1 of 2 branches missed.">            if (actualTypeArguments.length &gt; 0) {</span>
-                // Return the first type argument
-<span class="fc" id="L103">                return (Class&lt;?&gt;) actualTypeArguments[0];</span>
-            }
-        }
-<span class="nc" id="L106">        return null;</span>
-    }
 
     @Override
     final public boolean hasNext() {
-<span class="fc" id="L111">        return iterator.hasNext();</span>
+<span class="fc" id="L18">        return iterator.hasNext();</span>
     }
 
     @Override
     final public T next() {
-<span class="fc" id="L116">        final Object source = iterator.next().getObject();</span>
-        try {
-<span class="fc" id="L118">            return convertObject(clazz, source);</span>
-<span class="nc" id="L119">        } catch (ReflectiveOperationException e) {</span>
-<span class="nc" id="L120">            throw new RuntimeException(&quot;Failed to create instance of &quot; + clazz.getName(), e);</span>
-        }
+<span class="fc" id="L23">        final Value value = iterator.next();</span>
+<span class="fc" id="L24">        return converter.convertObject(value);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
